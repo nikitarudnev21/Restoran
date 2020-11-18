@@ -1,0 +1,55 @@
+@import "~materialize-css/dist/css/materialize.min.css";
+
+
+input.yellow-input {
+  border-bottom: 1px solid #fff !important;
+  box-shadow: 0 1px 0 0 #fff !important;
+}
+
+input.yellow-input+label {
+  color: #ffffff !important;
+}
+
+input.yellow-input:focus+label {
+  color: #ffeb3b !important;
+}
+
+input.yellow-input:focus {
+  border-bottom: 1px solid #ffeb3b !important;
+  box-shadow: 0 1px 0 0 #ffeb3b !important;
+}
+
+.viewpassword {
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  transition: .5s;
+  position: absolute;
+  margin-left: 520px;
+}
+
+.viewpassword:hover {
+  transform: translateY(-4px);
+  cursor: pointer;
+}
+
+.no-links {
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: .5rem;
+}
+
+.no-links * {
+  font-size: 1.4rem;
+}
+
+.actions-link * {
+  margin-left: 20px;
+}
+
+
+.actions-link:nth-child(1) {
+  margin-left: 0;
+}

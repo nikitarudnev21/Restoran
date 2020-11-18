@@ -1,0 +1,6 @@
+{
+    "port": 3002,
+    "jwtSecret": "nikita jwt key",
+    "mongoUri": "mongodb+srv://nikita:nikita123@mern-link-cluster.ucaml.azure.mongodb.net/app?retryWrites=true&w=majority",
+    "baseUrl": "http://localhost:3002"
+}
