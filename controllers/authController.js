@@ -2,7 +2,7 @@ const { Router } = require('express');
 const bcrypt = require('bcryptjs'); // библиотека позволяет хешировать пароли и сравнивать их
 const { check, validationResult } = require('express-validator');// позволяет валидировать данные отправленные пользователем
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const Admin = require('../models/Admin');
 const config = require('config');
 const router = Router();
 
@@ -27,14 +27,14 @@ router.post(
             }
 
             const { email, password } = req.body;
-            const candidate = await User.findOne({ email }); // проверяем есть ли в базе данных пользователь с таким же емейлом
+            const candidate = await Admin.findOne({ email }); // проверяем есть ли в базе данных пользователь с таким же емейлом
             if (candidate) {
                 return res.status(400).json({ message: 'Такой пользователь уже существует' });
             }
             // хешируем пароль пользователя
             const hashedPassword = await bcrypt.hash(password, 12);
             // создаем пользователя и сохраняем
-            const user = new User({ email, password: hashedPassword });
+            const user = new Admin({ email, password: hashedPassword });
             await user.save();
             // т.к пользователь создался успешно возвращаем данный на front
             res.status(201).json({ message: 'Пользователь создан' });
@@ -66,7 +66,7 @@ router.post(
             const { email, password } = req.body
 
             // пытаемся найти пользователя по эмайлу который ввел пользователь
-            const user = await User.findOne({ email });
+            const user = await Admin.findOne({ email });
             if (!user) {
                 return res.status(400).json({ message: 'Пользователь не найден' });
             }
