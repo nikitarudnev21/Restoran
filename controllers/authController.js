@@ -4,9 +4,26 @@ const { check, validationResult } = require('express-validator');// позвол
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 const config = require('config');
+const { MODELS_REF_ADMIN, MODELS_REF_CLIENT, MODELS_REF_COOK, MODELS_REF_OWNER, MODELS_REF_WAITER } = require('../vars');
 const router = Router();
 
 // /api/auth/register
+
+router.post('/secretkey',
+    async (req, res) => {
+        try {
+            if (req.body.key===config.get("secretKey")) {
+                res.status(200).json({conf:config.get("secretKey")})
+            }
+            else{
+                res.status(400).json({message:"Неверный ключ"})
+            }
+        } catch (e) {
+            res.status(400).json({message:"Что-то пошло не так"})
+        }
+    }
+);
+
 router.post(
     '/register',
     [
@@ -17,6 +34,7 @@ router.post(
         })
     ],
     async (req, res) => {
+        console.log(req.body);
         try {
             const errors = validationResult(req); // валидируем входящие поля
             if (!errors.isEmpty()) { // если есть ошибки в валидации
@@ -26,21 +44,31 @@ router.post(
                 });
             }
 
-            const { email, password } = req.body;
-            const candidate = await Admin.findOne({ email }); // проверяем есть ли в базе данных пользователь с таким же емейлом
-            if (candidate) {
-                return res.status(400).json({ message: 'Такой пользователь уже существует' });
+            const { email, password, role } = req.body;
+            switch (role) {
+                case MODELS_REF_ADMIN:
+                    const candidate = await Admin.findOne({ email });
+                    if (candidate) {
+                        return res.status(400).json({ message: 'Такой пользователь уже существует' });
+                    }
+                    const hashedPassword = await bcrypt.hash(password, 12);
+                    const user = new Admin({ email, password: hashedPassword });
+                    await user.save();
+                    res.status(201).json({ message: 'Пользователь создан' });
+                    break;
+                case MODELS_REF_CLIENT:
+                    break;
+                case MODELS_REF_COOK:
+                    break;
+                case MODELS_REF_OWNER:
+                    break;
+                case MODELS_REF_WAITER:
+                    break;
+                default:
+                    res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' });
+                    break;
             }
-            // хешируем пароль пользователя
-            const hashedPassword = await bcrypt.hash(password, 12);
-            // создаем пользователя и сохраняем
-            const user = new Admin({ email, password: hashedPassword });
-            await user.save();
-            // т.к пользователь создался успешно возвращаем данный на front
-            res.status(201).json({ message: 'Пользователь создан' });
-
         } catch (e) {
-            // 500 статус = серверная ошибка
             res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' });
         }
     });

@@ -2,13 +2,16 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
 import { AuthContext } from '../context/AuthContext';
+import { DateP } from '../components/DateP';
+import Datepicker from 'react-datepicker';
 export const AuthPage = () => {
     const auth = useContext(AuthContext);
     const message = useMessage();
     const inputPass = useRef();
     const inputPassView = useRef();
     const { loading, error, request, clearError } = useHttp();
-    const [form, setForm] = useState({ email: '', password: '' });
+    const [form, setForm] = useState({ email: '', password: '', role: '' });
+    const [key, setKey] = useState({value:"", visible:false});
     const [viewPassword, setViewPassword] = useState(false);
     const [viewPassStatus, setViewPassStatus] = useState(true);
 
@@ -31,6 +34,8 @@ export const AuthPage = () => {
                 setViewPassword(true);
             }
         })
+            /*request('/api/auth/secretkey', 'POST', {key:"nikita123"}).then(res=>console.log(res))
+            .catch(err=>console.log(err));*/
     }, []);
 
     // создаем пользователя    
@@ -39,6 +44,33 @@ export const AuthPage = () => {
             const data = await request('/api/auth/register', 'POST', { ...form });
             message(data.message);
         } catch (e) { }
+    }
+
+    const changeKey = value =>{
+        setKey(prev=>({...prev, value }));
+    }
+
+    const requestKey = async () => {
+        try {
+            const data = await request('/api/auth/secretkey', 'POST', { key: key.value });
+            data.message || message(data.message);
+            if (data.conf) {
+                message("Правильный ключ, можете продолжить регистрацию");
+            } 
+        } catch (e) {
+        }
+    }
+
+    const viewKey = (bol, val="") => {
+        if (val==="Admin") {
+            setKey(prev=>({...prev, visible: bol}));
+            setTimeout(() => {
+                window.M.updateTextFields();
+            }, 200);
+        }
+        else{
+            setKey(prev=>({...prev, visible: false}));
+        }
     }
 
     // логинимся в систему пользователя    
@@ -53,16 +85,31 @@ export const AuthPage = () => {
     return (
         <div className="row">
             <div className="col s6 offset-s3">
-                <h1>Сократи ссылку</h1>
+                <h1>NRestorans</h1>
                 <div className="card blue darken-1">
                     <div className="card-content white-text">
                         <span className="card-title">Авторизация</span>
                         <div>
+                        <div className="input-field">
+                                <input placeholder="Введите имя"
+                                    id="firstname" type="text" className="validate yellow-input" name="firstname"
+                                    onChange={changeHandler} value={form.firstname} />
+                                <label htmlFor="email">Имя</label>
+                            </div>
+                            <div className="input-field">
+                                <input placeholder="Введите фамилию"
+                                    id="lastname" type="text" className="validate yellow-input" name="lastname"
+                                    onChange={changeHandler} value={form.lastname} />
+                                <label htmlFor="email">Фамилия</label>
+                            </div>
                             <div className="input-field">
                                 <input placeholder="Введите email"
                                     id="email" type="text" className="validate yellow-input" name="email"
                                     onChange={changeHandler} value={form.email} />
                                 <label htmlFor="email">Email</label>
+                            </div>
+                            <div className="input-field">
+                                <DateP/>
                             </div>
                             <div className="input-field" style={{ display: "flex" }}
                                 onMouseOver={() => setViewPassword(true)} onMouseLeave={() => setViewPassword(false)}>
@@ -75,13 +122,34 @@ export const AuthPage = () => {
                                     onClick={() => setViewPassStatus(prev => !prev)} />
                                 <label htmlFor="password">Пароль</label>
                             </div>
+                            <label>Роль</label>
+                            <select className="browser-default click" name="role" defaultValue="Client"
+                             onChange={e=>{changeHandler(e); viewKey(true, e.target.value)}} disabled={loading}>
+                                <option value="Client">Клиент</option>
+                                <option value="Owner">Владелец ресторана</option>
+                                <option value="Cook">Повар</option>
+                                <option value="Waiter">Официант</option>
+                                <option value="Admin">Админ</option>
+                            </select>
+                            {key.visible &&
+                                <div className="input-field">
+                                <input placeholder="Секретный ключ"
+                                    id="key" type="text" className="validate yellow-input" name="key"
+                                     onChange={e=>changeKey(e.target.value)}/>
+                                <label htmlFor="email">Введите секретный ключ</label>
+                                <button className="btn yellow darken-4"
+                                onClick={()=>requestKey()}>Проверить</button>
+                                <button className="btn red darken-4" style={{ marginRight: 10 }}
+                                onClick={()=>viewKey(false, "Admin")}>Отмена</button>
+                            </div>
+                            }
                         </div>
                     </div>
                     <div className="card-action">
                         <button className="btn yellow darken-4" style={{ marginRight: 10 }}
-                            onClick={loginHandler}>Войти</button>
+                            onClick={loginHandler}  disabled={loading || key.visible}>Войти</button>
                         <button className="btn grey lighten-1 black-text"
-                            onClick={registerHandler} disabled={loading}>Регистрация</button>
+                            onClick={registerHandler} disabled={loading || key.visible}>Регистрация</button>
                     </div>
                 </div>
             </div>

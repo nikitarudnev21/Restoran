@@ -1,15 +1,17 @@
-export const MODELS_COOK = "SERVER/MODELS/COOK";
-export const MODELS_ADMIN = "SERVER/MODELS/ADMIN";
-export const MODELS_CLIENT = "SERVER/MODELS/CLIENT";
-export const MODELS_OWNER = "SERVER/MODELS/OWNER";
-export const MODELS_WAITER = "SERVER/MODELS/WAITER";
-export const MODELS_REF_COOK = "Cook";
-export const MODELS_REF_ADMIN = "Admin";
-export const MODELS_REF_CLIENT = "Client";
-export const MODELS_REF_OWNER = "Owner";
-export const MODELS_REF_WAITER = "Waiter";
-export const MODELS_REF_RESTARAUNT = "Restaraunt";
-export const MODELS_REF_ORDER = "Order";
-export const MODELS_REF_DISH = "Dish";
-export const ORDER_STATUS_DONE = "ORDER/STATUS/DONE";
-export const ORDER_STATUS_IN_PROGRESS = "ORDER/STATUS/IN_PROGRESS";
+module.exports = {
+    MODELS_COOK: "SERVER/MODELS/COOK",
+    MODELS_ADMIN : "SERVER/MODELS/ADMIN",
+    MODELS_CLIENT : "SERVER/MODELS/CLIENT",
+    MODELS_OWNER : "SERVER/MODELS/OWNER",
+    MODELS_WAITER : "SERVER/MODELS/WAITER",
+    MODELS_REF_COOK : "Cook",
+    MODELS_REF_ADMIN : "Admin",
+    MODELS_REF_CLIENT : "Client",
+    MODELS_REF_OWNER : "Owner",
+    MODELS_REF_WAITER : "Waiter",
+    MODELS_REF_RESTARAUNT : "Restaraunt",
+    MODELS_REF_ORDER : "Order",
+    MODELS_REF_DISH : "Dish",
+    ORDER_STATUS_DONE : "ORDER/STATUS/DONE",
+    ORDER_STATUS_IN_PROGRESS : "ORDER/STATUS/IN_PROGRESS",
+}

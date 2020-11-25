@@ -2,5 +2,6 @@
     "port": 3002,
     "jwtSecret": "nikita jwt key",
     "mongoUri": "mongodb+srv://nikita:gewert22@restorancluster.qkstm.mongodb.net/app?retryWrites=true&w=majority",
-    "baseUrl": "http://localhost:3002"
+    "baseUrl": "http://localhost:3002",
+    "secretKey": "nikita123"
 }

@@ -53,3 +53,7 @@ input.yellow-input:focus {
 .actions-link:nth-child(1) {
   margin-left: 0;
 }
+
+.click:hover{
+  cursor: pointer;
+}
