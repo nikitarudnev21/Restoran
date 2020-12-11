@@ -34,7 +34,7 @@ export default function UsersList({ users, setUsers }) {
     const editUser = useCallback(async id => {
         try {
             const user = copiedUsers.find(c => c._id === id);
-            if (user.name && user.address && user.ownername) {
+            if (user.address) {
                 const req = await request(`/api/users/edit/${id}`, 'PATCH', { user }, { Authorization: `Bearer ${token}` });
                 req.edited && editCancel(id);
                 message(req.message);
@@ -100,7 +100,6 @@ export default function UsersList({ users, setUsers }) {
                                         <td className="actions-link">
                                             <button className="btn red darken-2" onClick={() => deleteUser(user._id, user.role, user.email)}>Удалить</button>
                                             <button className="btn blue darken-1" onClick={() => editCancel(user._id)}>Отменить</button>
-                                            <button className="btn waves-effect waves-light" type="submit" name="action" onClick={() => editUser(user._id)}>Изменить</button>
                                         </td>
                                     </tr>
                                     :
@@ -116,7 +115,6 @@ export default function UsersList({ users, setUsers }) {
                                         <td>{user.telephone}</td>
                                         <td className="actions-link">
                                             <button className="btn red darken-2" onClick={() => deleteUser(user._id, user.role, user.email)}>Удалить</button>
-                                            <button  className="btn blue darken-1" onClick={() => editHandler(user._id)}>Изменить</button>
                                         </td>
                                     </tr>
                             )

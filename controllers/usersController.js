@@ -45,7 +45,7 @@ router.patch('/edit/:id', auth, async (req, res) => {
     try {
         await mongoose.connection.db.listCollections().toArray(function (err, names) {
             names.map(async (name,_,arr)=>{
-                const user = await db.collection(name.name).findOneAndUpdate({_id: req.params.id });
+                const user = await db.collection(name.name).findOneAndUpdate({_id: req.params.id }, {...req.body});
                 if (user) {
                     return res.json({ message: 'Пользователь был успешо изменен', user, edited: true });
                 }
