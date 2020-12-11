@@ -4,8 +4,9 @@ const schema = new Schema({
     name: { type: String, required: true, unique: true },
     address: { type: String, required: true },
     telephone: { type: String, required: true, unique: true },
-    workers: { type: Array, required: true },
+    workers: [{type: Types.ObjectId}],
     owner: { type: Types.ObjectId, ref: MODELS_REF_OWNER},
+    ownername: {type: String, required: true},
     orders: [{type: Types.ObjectId, ref: MODELS_REF_ORDER}] 
 });
 

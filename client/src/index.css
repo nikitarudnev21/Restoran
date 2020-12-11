@@ -54,6 +54,11 @@ input.yellow-input:focus {
   margin-left: 0;
 }
 
-.click:hover{
+.click:hover {
   cursor: pointer;
+}
+
+td,
+th {
+  text-align: center;
 }

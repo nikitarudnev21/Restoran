@@ -17,7 +17,6 @@ export const CreatePage = () => {
                 const data = await request('/api/link/generate', 'POST', { from: link }, {
                     Authorization: `Bearer ${auth.token}`
                 });
-                // если мы сгенерировали ссылку то сразу открываем ее по id, поле _id идет по умолчанию от mongodb;
                 history.push(`/detail/${data.link._id}`);
             } catch (e) { }
         }

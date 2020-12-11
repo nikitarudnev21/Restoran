@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-// показываем сплывающие окно из библиотеки materialize
 export const useMessage = () => {
     return useCallback(
         text => {

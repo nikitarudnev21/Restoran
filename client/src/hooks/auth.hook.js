@@ -3,30 +3,32 @@ import { useState, useCallback, useEffect } from "react"
 const storageName = 'userData';
 
 export const useAuth = () => {
-    // если в localstorage есть jwt token то не нужно входить в систему
     const [token, setToken] = useState(null);
     const [userId, setUserId] = useState(null);
     const [ready, setReady] = useState(false);
-
-    const login = useCallback((jwtToken, id) => {
+    const [name, setName] = useState(null);
+    const [role, setRole] = useState(null);
+    const login = useCallback((jwtToken, id, _name, _role) => {
         setToken(jwtToken);
         setUserId(id);
+        setName(_name);
+        setRole(_role);
         localStorage.setItem(storageName, JSON.stringify({
-            userId: id, token: jwtToken
+            userId: id, token: jwtToken, name: _name, role: _role
         }));
 
     }, []);
     const logout = useCallback(() => {
         setToken(null);
         setUserId(null);
-        localStorage.removeItem(storageName); // себе на заметку: вместо localStorage можно использовать cookie = document.cookie
+        setName(null);
+        setRole(null);
+        localStorage.removeItem(storageName);
     }, []);
-
-    // если по умолчанию в localstorage что-то есть то задаем локальным state`ам значения
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem(storageName));
         if (data && data.token) {
-            login(data.token, data.userId);
+            login(data.token, data.userId, data.name, data.role);
         }
         setReady(true);
     }, [login]);
@@ -35,5 +37,5 @@ export const useAuth = () => {
         window.M.updateTextFields();
     }, []);
 
-    return { login, logout, token, userId, ready };
+    return { login, logout, token, userId, ready, name, role };
 }

@@ -5,7 +5,7 @@ const schema = new Schema({
     dishes: [{type: Types.ObjectId, ref: 'Dish'}],
     tablenumber: {type: Number, required: true},
     status: {type: String, required: true},
-    datetime: {type: Date, required: true, default: Date.now},
+    datetime: {type: String, required: true, default: Date.now},
     price: {type: String, required: true, default: "0"}
 });
 

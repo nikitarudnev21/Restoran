@@ -3,7 +3,7 @@ const { MODELS_CLIENT, MODELS_REF_ORDER, MODELS_REF_CLIENT } = require('../vars'
 const schema = new Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    birth: { type: Date, required: true },
+    birth: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     idcode: { type: Number, required: true, unique: true },

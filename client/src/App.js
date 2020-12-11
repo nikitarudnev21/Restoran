@@ -7,16 +7,16 @@ import { AuthContext } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Loader } from './components/Loader';
 function App() {
-  const { token, login, logout, userId, ready } = useAuth();
-  const isAuthenticated = !!token; // приводим к boolean значению
-  const routes = useRoutes(isAuthenticated);
-
-  if (!ready) { // если еще не прогрузилась авторизация то возвращаем лоадер
+  const { token, login, logout, userId, ready, name, role } = useAuth();
+  const isAuthenticated = !!token;
+  let routes;
+  routes = useRoutes(isAuthenticated, role);
+  if (!ready && !role) {
     return <Loader />
   }
   return (
     <AuthContext.Provider value={{
-      token, login, logout, userId, isAuthenticated
+      token, login, logout, userId, isAuthenticated, name, role
     }}>
       <Router>
         {isAuthenticated && <Navbar />}

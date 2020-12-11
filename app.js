@@ -3,20 +3,18 @@ const config = require('config');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
-app.use(express.json({ extended: true })); // чтобы express мог парсить request.body 
+app.use(express.json({ extended: true })); 
 
 app.use('/api/auth', require('./controllers/authController'));
-app.use('/api/link', require('./controllers/linkController'));
-app.use('/t', require('./controllers/redirectController'));
-
-
-// app.use === (/,req) = если идет запрос на / то делаем что-то
+app.use('/api/apikey', require('./controllers/apikeyController'));
+app.use('/api/restaraunt', require('./controllers/restarauntController'));
+app.use('/api/users', require('./controllers/usersController'));
 
 if (process.env.NODE_ENV === 'production') {
     app.use('/', express.static(path.join(__dirname, 'client', 'build')));
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')); // запускаем и front и back одновременно
-    }); // * = любой get запрос
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')); 
+    }); 
 
 }
 

@@ -3,7 +3,7 @@ const { MODELS_WAITER, MODELS_REF_RESTARAUNT, MODELS_REF_OWNER, MODELS_REF_WAITE
 const schema = new Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    birth: { type: Date, required: true },
+    birth: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     idcode: { type: Number, required: true, unique: true },
